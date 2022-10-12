@@ -69,9 +69,10 @@ func (u utils) CreateConfig(input Input,
 		RelaunchTestForEachRepetition: input.RelaunchTestsForEachRepetition,
 		RetryTestsOnFailure:           input.RetryTestsOnFailure,
 
-		XCConfigContent:    input.XCConfigContent,
-		PerformCleanAction: input.PerformCleanAction,
-		XcodebuildOptions:  additionalOptions,
+		XCConfigContent:          input.XCConfigContent,
+		PerformCleanAction:       input.PerformCleanAction,
+		XcodebuildOptions:        additionalOptions,
+		XcodebuildPrependEnvArgs: input.XcodebuildPrependEnvArgs,
 
 		LogFormatter:        input.LogFormatter,
 		LogFormatterOptions: additionalLogFormatterOptions,
@@ -99,6 +100,7 @@ func (u utils) CreateTestParams(cfg Config, xcresultPath, swiftPackagesPath stri
 		PerformCleanAction:             cfg.PerformCleanAction,
 		RetryTestsOnFailure:            cfg.RetryTestsOnFailure,
 		AdditionalOptions:              cfg.XcodebuildOptions,
+		EnvVars:                        cfg.XcodebuildPrependEnvArgs,
 	}
 
 	return xcodebuild.TestRunParams{

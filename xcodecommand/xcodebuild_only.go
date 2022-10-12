@@ -23,7 +23,7 @@ func NewRawCommandRunner(logger log.Logger, commandFactory command.Factory) Runn
 	}
 }
 
-func (c *rawXcodeCommand) Run(workDir string, args []string, _ []string) (Output, error) {
+func (c *rawXcodeCommand) Run(workDir string, args []string, _ []string, envVars string) (Output, error) {
 	var (
 		outBuffer bytes.Buffer
 		err       error

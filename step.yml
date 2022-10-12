@@ -199,6 +199,15 @@ inputs:
 
       Prefer using `Build settings (xcconfig)` input for specifying `-xcconfig` option. You can't use both.
 
+- xcodebuild_prepend_env_args: ""
+  opts:
+    category: xcodebuild configuration
+    title: Environment vars to prepend
+    summary: Environment vars to prepend.
+    description: |-
+      Environment vars to prepend.
+    
+
 # xcodebuild log formatting
 
 - log_formatter: xcpretty

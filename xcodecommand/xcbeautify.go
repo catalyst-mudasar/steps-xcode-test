@@ -7,6 +7,7 @@ import (
 	"io"
 	"os"
 	"os/exec"
+	"strings"
 
 	"github.com/bitrise-io/go-utils/errorutil"
 	"github.com/bitrise-io/go-utils/v2/command"
@@ -33,7 +34,7 @@ func NewXcbeautifyRunner(logger log.Logger, commandFactory command.Factory) Runn
 	}
 }
 
-func (c *xcbeautifyRunner) Run(workDir string, xcodebuildArgs []string, xcbeautifyArgs []string) (Output, error) {
+func (c *xcbeautifyRunner) Run(workDir string, xcodebuildArgs []string, xcbeautifyArgs []string, envVars string) (Output, error) {
 	var (
 		buildOutBuffer         bytes.Buffer
 		pipeReader, pipeWriter = io.Pipe()
@@ -42,6 +43,10 @@ func (c *xcbeautifyRunner) Run(workDir string, xcodebuildArgs []string, xcbeauti
 
 	// For parallel and concurrent destination testing, it helps to use unbuffered I/O for stdout and to redirect stderr to stdout.
 	// NSUnbufferedIO=YES xcodebuild [args] 2>&1 | xcbeautify
+	if envVars != "" {
+		xcodeCommandEnvs = append(xcodeCommandEnvs, strings.Split(envVars, ",")...)
+	}
+
 	buildCmd := c.commandFactory.Create("xcodebuild", xcodebuildArgs, &command.Opts{
 		Stdout: buildOutWriter,
 		Stderr: buildOutWriter,

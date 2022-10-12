@@ -9,7 +9,8 @@ import (
 )
 
 // On performance limited OS X hosts (ex: VMs) the iPhone/iOS Simulator might time out
-//  while booting. So far it seems that a simple retry solves these issues.
+//
+//	while booting. So far it seems that a simple retry solves these issues.
 const (
 	// This boot timeout can happen when running Unit Tests with Xcode Command Line `xcodebuild`.
 	timeOutMessageIPhoneSimulator = "iPhoneSimulator: Timed out waiting"
@@ -54,6 +55,7 @@ type TestParams struct {
 	PerformCleanAction             bool
 	RetryTestsOnFailure            bool
 	AdditionalOptions              []string
+	EnvVars                        string
 }
 
 func (b *xcodebuild) createXcodebuildTestArgs(params TestParams) ([]string, error) {
@@ -116,8 +118,9 @@ func (b *xcodebuild) runTest(params TestRunParams) (string, int, error) {
 	// When the project path input is set to an SPM Package.swift file, we need to execute the xcodebuild command
 	// within the working directory of the project. This is optional for regular workspaces and projects,
 	// because we use the `-project` flag to point to the .xcproj/xcworkspace, but we do it for consistency.
+	b.logger.Donef(fmt.Sprintf("Xcodebuild env vars: %s", params.TestParams.EnvVars))
 	workDir := filepath.Dir(params.TestParams.ProjectPath)
-	output, testErr := b.xcodeCommandRunner.Run(workDir, xcodebuildArgs, params.LogFormatterOptions)
+	output, testErr := b.xcodeCommandRunner.Run(workDir, xcodebuildArgs, params.LogFormatterOptions, params.TestParams.EnvVars)
 
 	if output.ExitCode != 0 {
 		fmt.Println("Exit code: ", output.ExitCode)

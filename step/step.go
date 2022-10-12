@@ -42,9 +42,10 @@ type Input struct {
 	RetryTestsOnFailure            bool   `env:"should_retry_test_on_fail,opt[yes,no]"`
 
 	// xcodebuild configuration
-	XCConfigContent    string `env:"xcconfig_content"`
-	PerformCleanAction bool   `env:"perform_clean_action,opt[yes,no]"`
-	XcodebuildOptions  string `env:"xcodebuild_options"`
+	XCConfigContent          string `env:"xcconfig_content"`
+	PerformCleanAction       bool   `env:"perform_clean_action,opt[yes,no]"`
+	XcodebuildOptions        string `env:"xcodebuild_options"`
+	XcodebuildPrependEnvArgs string `env:"xcodebuild_prepend_env_args"`
 
 	// xcodebuild log formatting
 	LogFormatter      string `env:"log_formatter,opt[xcbeautify,xcodebuild,xcpretty]"`
@@ -94,9 +95,10 @@ type Config struct {
 	RelaunchTestForEachRepetition bool
 	RetryTestsOnFailure           bool
 
-	XCConfigContent    string
-	PerformCleanAction bool
-	XcodebuildOptions  []string
+	XCConfigContent          string
+	PerformCleanAction       bool
+	XcodebuildOptions        []string
+	XcodebuildPrependEnvArgs string
 
 	LogFormatter        string
 	LogFormatterOptions []string

@@ -14,5 +14,5 @@ type DependencyInstaller interface {
 }
 
 type Runner interface {
-	Run(workDir string, xcodebuildOpts []string, logFormatterOpts []string) (Output, error)
+	Run(workDir string, xcodebuildOpts []string, logFormatterOpts []string, envVars string) (Output, error)
 }

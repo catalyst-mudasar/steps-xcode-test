@@ -6,6 +6,7 @@ import (
 	"io"
 	"os"
 	"os/exec"
+	"strings"
 
 	"github.com/bitrise-io/go-utils/v2/command"
 	"github.com/bitrise-io/go-utils/v2/fileutil"
@@ -29,7 +30,7 @@ func NewXcprettyCommandRunner(logger log.Logger, commandFactory command.Factory,
 	}
 }
 
-func (c *xcprettyCommandRunner) Run(workDir string, xcodebuildArgs []string, xcprettyArgs []string) (Output, error) {
+func (c *xcprettyCommandRunner) Run(workDir string, xcodebuildArgs []string, xcprettyArgs []string, envVars string) (Output, error) {
 	var (
 		buildOutBuffer         bytes.Buffer
 		pipeReader, pipeWriter = io.Pipe()
@@ -38,6 +39,10 @@ func (c *xcprettyCommandRunner) Run(workDir string, xcodebuildArgs []string, xcp
 	)
 
 	c.cleanOutputFile(xcprettyArgs)
+
+	if envVars != "" {
+		xcodeCommandEnvs = append(xcodeCommandEnvs, strings.Split(envVars, ",")...)
+	}
 
 	buildCmd := c.commandFactory.Create("xcodebuild", xcodebuildArgs, &command.Opts{
 		Stdout: buildOutWriter,
